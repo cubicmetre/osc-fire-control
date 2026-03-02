@@ -1,0 +1,300 @@
+.led-display {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #0f3460;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.led-display--invalid {
+  border-color: #e94560;
+  box-shadow: 
+    0 4px 20px rgba(233, 69, 96, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.led-display__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.led-display__title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #e94560;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.led-display__warning {
+  font-size: 0.65rem;
+  color: #ffc107;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.led-display__grid-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+/* Color variables for easy reference */
+.led-display__frame {
+  /* Column colors */
+  --color-blue-dark: #0070C0;
+  --color-blue-light: #00B0F0;
+  --color-green: #92D050;
+  --color-yellow: #FFC000;
+  --color-orange: #ED7D31;
+  --color-red: #C00000;
+  --color-brown: #996633;
+  
+  /* Row colors - dark to light gradient */
+  --color-row-1: #0D0D0D;
+  --color-row-2: #262626;
+  --color-row-3: #404040;
+  --color-row-4: #595959;
+  --color-row-5: #808080;
+  
+  /* Grid sizing */
+  --led-size: 24px;
+  --border-size: 10px;
+  
+  display: grid;
+  /* 15 columns: border + 13 LEDs + border */
+  grid-template-columns: var(--border-size) repeat(13, var(--led-size)) var(--border-size);
+  /* 7 rows: border + 5 LED rows + border */
+  grid-template-rows: var(--border-size) repeat(5, var(--led-size)) var(--border-size);
+  gap: 0;
+  background: #1a1a2e;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Border cells for columns (top/bottom) and rows (left/right) */
+.led-display__border-cell {
+  width: 100%;
+  height: 100%;
+}
+
+/* Column colors */
+.led-display__border-cell--blue-dark { background: var(--color-blue-dark); }
+.led-display__border-cell--blue-light { background: var(--color-blue-light); }
+.led-display__border-cell--green { background: var(--color-green); }
+.led-display__border-cell--yellow { background: var(--color-yellow); }
+.led-display__border-cell--orange { background: var(--color-orange); }
+.led-display__border-cell--red { background: var(--color-red); }
+.led-display__border-cell--brown { background: var(--color-brown); }
+
+/* Row colors */
+.led-display__border-cell--row-1 { background: var(--color-row-1); }
+.led-display__border-cell--row-2 { background: var(--color-row-2); }
+.led-display__border-cell--row-3 { background: var(--color-row-3); }
+.led-display__border-cell--row-4 { background: var(--color-row-4); }
+.led-display__border-cell--row-5 { background: var(--color-row-5); }
+
+/* LED cells - centered within grid cell */
+.led-display__led {
+  width: var(--led-size);
+  height: var(--led-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a2e;
+}
+
+/* The actual LED circle */
+.led-display__led-outer {
+  width: calc(var(--led-size) - 4px);
+  height: calc(var(--led-size) - 4px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+/* Off state - dark circle with glassy appearance */
+.led-display__led--off .led-display__led-outer {
+  background: 
+    radial-gradient(ellipse 50% 30% at 50% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
+    radial-gradient(circle at 30% 30%, #2a2a3e 0%, #1a1a2e 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.led-display__led--off .led-display__led-inner {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: 
+    radial-gradient(ellipse 60% 40% at 45% 35%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at 40% 40%, #3a3a4e 0%, #252535 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* On state - glowing green circle with glassy shine (no outer glow - handled by glow layer) */
+.led-display__led--on .led-display__led-outer {
+  background: 
+    radial-gradient(ellipse 50% 30% at 50% 25%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(circle at 30% 30%, #1a4a1a 0%, #0a2a0a 100%);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 -1px 2px rgba(0, 255, 100, 0.2);
+}
+
+.led-display__led--on .led-display__led-inner {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #00ff88 0%, #00dd66 40%, #00aa44 100%);
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Glassy highlight on inner LED */
+.led-display__led--on .led-display__led-inner::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 50%;
+  height: 35%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 70%);
+}
+
+/* ========== GLOW OVERLAY LAYER ========== */
+/* This layer renders on top of the grid with blur filter for unified additive glow */
+
+.led-display__glow-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  /* Offset to align with LED grid (account for border) */
+  padding-top: calc(var(--border-size, 10px));
+  padding-bottom: calc(var(--border-size, 10px));
+  padding-left: calc(var(--border-size, 10px));
+  padding-right: calc(var(--border-size, 10px));
+  filter: blur(6px);
+  mix-blend-mode: screen;
+}
+
+.led-display__glow-row {
+  display: flex;
+}
+
+.led-display__glow-cell {
+  width: var(--led-size, 24px);
+  height: var(--led-size, 24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.led-display__glow-cell--on::before {
+  content: '';
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 255, 100, 0.8) 0%, rgba(0, 255, 100, 0.4) 50%, transparent 100%);
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.led-display__summary {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.led-display__stats-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.led-display__stats-toggle:hover {
+  color: #e2e8f0;
+}
+
+.led-display__stats-toggle-icon {
+  color: #e94560;
+  font-size: 0.65rem;
+}
+
+.led-display__summary-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.led-display__summary-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.led-display__summary-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #e2e8f0;
+}
+
+.led-display__summary-value--time {
+  color: #00ff88;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .led-display__frame {
+    --led-size: 18px;
+    --border-size: 8px;
+  }
+}

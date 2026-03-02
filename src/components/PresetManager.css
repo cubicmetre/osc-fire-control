@@ -1,0 +1,208 @@
+.preset-manager__toggle {
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  border: 1px solid #1a4a80;
+  border-radius: 8px;
+  color: #a8c8ff;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-manager__toggle:hover {
+  background: linear-gradient(135deg, #1a4a80 0%, #1e2a4e 100%);
+  transform: translateY(-1px);
+}
+
+.preset-manager {
+  background: linear-gradient(145deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+  border: 1px solid #0f3460;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(15, 52, 96, 0.3);
+}
+
+/* Only apply backdrop-filter blur when video is visible */
+.app--with-video .preset-manager {
+  backdrop-filter: blur(10px);
+}
+
+.preset-manager__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.preset-manager__title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: #60a5fa;
+  margin: 0;
+}
+
+.preset-manager__close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #60a5fa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.preset-manager__close:hover {
+  background: rgba(96, 165, 250, 0.2);
+}
+
+.preset-manager__save-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(96, 165, 250, 0.1);
+  border: 1px dashed rgba(96, 165, 250, 0.3);
+  border-radius: 8px;
+  color: #60a5fa;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  margin-bottom: 1rem;
+}
+
+.preset-manager__save-btn:hover {
+  background: rgba(96, 165, 250, 0.15);
+  border-style: solid;
+}
+
+.preset-manager__save-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.preset-manager__save-form input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  background: #1a1a2e;
+  border: 1px solid #3a3a5c;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.preset-manager__save-form input:focus {
+  outline: none;
+  border-color: #60a5fa;
+}
+
+.preset-manager__btn {
+  padding: 0.6rem 0.75rem;
+  background: #60a5fa;
+  border: none;
+  border-radius: 6px;
+  color: #0f172a;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-manager__btn:hover {
+  background: #3b82f6;
+}
+
+.preset-manager__btn--secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+.preset-manager__btn--secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.preset-manager__btn--load {
+  background: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+}
+
+.preset-manager__btn--load:hover {
+  background: rgba(96, 165, 250, 0.25);
+}
+
+.preset-manager__btn--delete {
+  background: rgba(233, 69, 96, 0.1);
+  color: #e94560;
+  padding: 0.5rem 0.6rem;
+}
+
+.preset-manager__btn--delete:hover {
+  background: rgba(233, 69, 96, 0.2);
+}
+
+.preset-manager__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.preset-manager__empty {
+  text-align: center;
+  padding: 2rem;
+  color: #64748b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+}
+
+.preset-manager__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+.preset-manager__item:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(96, 165, 250, 0.2);
+}
+
+.preset-manager__item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.preset-manager__item-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preset-manager__item-meta {
+  font-size: 0.65rem;
+  color: #64748b;
+}
+
+.preset-manager__item-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+
+
+

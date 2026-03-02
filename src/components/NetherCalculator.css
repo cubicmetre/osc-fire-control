@@ -1,0 +1,206 @@
+.nether-calc__toggle {
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, #8b0000 0%, #5c1010 100%);
+  border: 1px solid #a02020;
+  border-radius: 8px;
+  color: #ffcccc;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nether-calc__toggle:hover {
+  background: linear-gradient(135deg, #a01010 0%, #701515 100%);
+  transform: translateY(-1px);
+}
+
+.nether-calc {
+  background: linear-gradient(145deg, #2a1515 0%, #1a0a0a 100%);
+  border: 1px solid #5c1010;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 20px rgba(139, 0, 0, 0.2);
+}
+
+.nether-calc__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.nether-calc__title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  margin: 0;
+}
+
+.nether-calc__close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ff6b6b;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.nether-calc__close:hover {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+.nether-calc__mode-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.nether-calc__mode-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 6px;
+  color: #94a3b8;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nether-calc__mode-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.nether-calc__mode-btn--active {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.nether-calc__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nether-calc__section {
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.nether-calc__section--result {
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.nether-calc__label {
+  display: block;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.nether-calc__coords {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nether-calc__coord {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #1a1a2e;
+  border: 1px solid #3a3a5c;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.nether-calc__coord span {
+  padding: 0.4rem 0.5rem;
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff6b6b;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+}
+
+.nether-calc__coord input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.4rem;
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  min-width: 0;
+}
+
+.nether-calc__coord input:focus {
+  outline: none;
+}
+
+.nether-calc__arrow {
+  text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  padding: 0.25rem;
+}
+
+.nether-calc__result {
+  display: flex;
+  gap: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #e2e8f0;
+}
+
+.nether-calc__result strong {
+  color: #ff6b6b;
+}
+
+.nether-calc__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.nether-calc__btn {
+  flex: 1;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nether-calc__btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nether-calc__btn--primary {
+  background: linear-gradient(135deg, #8b0000 0%, #5c1010 100%);
+  border-color: #a02020;
+  color: #ffcccc;
+}
+
+.nether-calc__btn--primary:hover {
+  background: linear-gradient(135deg, #a01010 0%, #701515 100%);
+}
+
+
+
+
+

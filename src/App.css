@@ -1,0 +1,472 @@
+/* App Container */
+.app {
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #12121a;
+  --bg-secondary-translucent: rgba(18, 18, 26, 0.85);
+  --bg-tertiary: #1a1a2e;
+  --border-color: #2a2a4a;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #e94560;
+  --accent-glow: rgba(233, 69, 96, 0.3);
+
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  color: var(--text-primary);
+}
+
+/* Header */
+.app__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  background: var(--bg-secondary-translucent);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Only apply backdrop-filter blur when video is visible */
+.app__header--with-video {
+  backdrop-filter: blur(10px);
+}
+
+.app__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.app__title-icon {
+  font-size: 1.75rem;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.app__toggle-panorama-btn {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  background: rgba(233, 69, 96, 0.15);
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  height: 2rem;
+  width: 2rem;
+  min-width: 2rem;
+  flex-shrink: 0;
+}
+
+.app__toggle-panorama-btn:hover {
+  background: rgba(233, 69, 96, 0.25);
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.app__toggle-panorama-btn:active {
+  transform: scale(0.95);
+}
+
+.app__toggle-panorama-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.app__toggle-panorama-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  color: var(--accent);
+  opacity: 0;
+  max-width: 0;
+  padding-right: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expanded state on hover */
+.app__toggle-panorama-btn--expanded {
+  border-radius: 1rem;
+  width: auto;
+}
+
+.app__toggle-panorama-btn--expanded .app__toggle-panorama-text {
+  opacity: 1;
+  max-width: 150px;
+  padding-right: 0.75rem;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    filter: drop-shadow(0 0 5px var(--accent-glow));
+  }
+  50% { 
+    filter: drop-shadow(0 0 15px var(--accent-glow));
+  }
+}
+
+/* Main Content */
+.app__main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.app__main--hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+/* Sections */
+.app__section {
+  background: var(--bg-secondary-translucent);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Only apply backdrop-filter blur when video is visible */
+.app--with-video .app__section {
+  backdrop-filter: blur(10px);
+}
+
+.app__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.app__section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.app__section-icon {
+  font-size: 1.25rem;
+}
+
+/* Origin Section */
+.app__section--origin {
+  border-color: var(--accent);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    0 0 30px var(--accent-glow);
+  overflow: hidden;
+}
+
+.app__origin-inputs {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.app__coord-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.app__coord-input label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.app__coord-input input {
+  width: 100%;
+  padding: 0.6rem 0.5rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.app__coord-input input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.app__origin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.15s ease;
+}
+
+.app__origin-header:hover {
+  opacity: 0.85;
+}
+
+.app__section--collapsed .app__origin-header {
+  margin-bottom: 0;
+}
+
+.app__collapse-icon {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+  transform: rotate(-90deg);
+}
+
+.app__collapse-icon--expanded {
+  transform: rotate(0deg);
+}
+
+.app__origin-summary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+}
+
+.app__origin-hint {
+  margin: 0;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.app__input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app__input-group--passcode {
+  min-width: 120px;
+}
+
+.app__input-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.app__passcode-select {
+  padding: 0.5rem 0.6rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.app__passcode-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.app__passcode-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.app__origin-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.app__nether-pos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: rgba(139, 0, 0, 0.15);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 6px;
+}
+
+.app__nether-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.6rem;
+  color: #ff6b6b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.app__nether-coords {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  color: #ffaaaa;
+}
+
+/* Tools Section - no background or blur, just contains the preset button/panel */
+.app__section--tools {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  backdrop-filter: none;
+}
+
+/* Override the video blur rule for tools section */
+.app--with-video .app__section--tools {
+  backdrop-filter: none;
+}
+
+/* Targets Section */
+.app__add-btn {
+  padding: 0.6rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent) 0%, #c73e54 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.app__add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.app__add-btn:active {
+  transform: translateY(0);
+}
+
+.app__targets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Footer */
+.app__footer {
+  padding: 1.5rem 2rem;
+  text-align: center;
+  background: var(--bg-secondary-translucent);
+  border-top: 1px solid var(--border-color);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Only apply backdrop-filter blur when video is visible */
+.app--with-video .app__footer {
+  backdrop-filter: blur(10px);
+}
+
+.app__footer--hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+.app__footer p {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .app__header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .app__title {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+
+
+  .app__main {
+    padding: 1rem;
+  }
+
+  .app__origin-inputs {
+    flex-direction: column;
+  }
+
+  .app__section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .app__add-btn {
+    width: 100%;
+  }
+
+  .app__tools {
+    flex-direction: column;
+  }
+}
+

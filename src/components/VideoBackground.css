@@ -1,0 +1,55 @@
+.video-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #0a0a0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.video-background__video {
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  object-fit: none;
+  transform-origin: center center;
+  transition: opacity 0.3s ease;
+}
+
+.video-background__video--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-background__image {
+  position: absolute;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  object-fit: none;
+  transform-origin: center center;
+  transition: opacity 0.3s ease;
+}
+
+.video-background__vignette {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 20%,
+    rgba(10, 10, 15, 0.6) 50%,
+    rgba(10, 10, 15, 0.95) 80%,
+    #0a0a0f 100%
+  );
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.video-background__vignette--hidden {
+  opacity: 0;
+}
