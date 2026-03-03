@@ -269,3 +269,14 @@ function calculateTimeBreakdown(
     acceleration: formatTimeSeconds(accelerationSeconds),
   };
 }
+
+/**
+ * Calculate Overworld coordinates from Nether
+ */
+export function netherToOverworld(coords: Coordinates): Coordinates {
+  return {
+    x: coords.x * 8,
+    y: coords.y,
+    z: coords.z * 8,
+  };
+}
