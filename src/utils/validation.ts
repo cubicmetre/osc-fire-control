@@ -1,4 +1,4 @@
-import type { Coordinates, TargetCell, ValidationResult } from '../types';
+import type { Coordinates, TargetCell, ValidationResult, CannonOriginVariant } from '../types';
 import { isValidPasscode } from '../data/validPasscodes';
 import { calculate } from './calculations';
 
@@ -44,7 +44,8 @@ export function parseInteger(value: string, defaultValue: number = 0): number {
 export function validateTarget(
   origin: Coordinates,
   target: TargetCell,
-  passcode: number
+  passcode: number,
+  cannonOrigin: CannonOriginVariant = 'osc-mk6'
 ): ValidationResult {
   const errors: string[] = [];
 
@@ -91,7 +92,7 @@ export function validateTarget(
   }
 
   // Use the same calculations as the main calculate function
-  const result = calculate(origin, target, passcode);
+  const result = calculate(origin, target, passcode, cannonOrigin);
 
   // Check count overflows using calculated values
   if (Math.abs(result.count.x) >= 32767.999) {

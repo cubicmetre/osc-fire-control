@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import type { Coordinates, TargetCell, Preset } from '../types';
+import type { Coordinates, TargetCell, Preset, CannonOriginVariant } from '../types';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import './PresetManager.css';
 
 interface PresetManagerProps {
   origin: Coordinates;
   passcode: number;
+  cannonOrigin: CannonOriginVariant;
   targets: TargetCell[];
-  onLoadPreset: (origin: Coordinates, passcode: number, targets: Omit<TargetCell, 'id' | 'isExpanded'>[]) => void;
+  onLoadPreset: (origin: Coordinates, passcode: number, cannonOrigin: CannonOriginVariant, targets: Omit<TargetCell, 'id' | 'isExpanded'>[]) => void;
 }
 
-export function PresetManager({ origin, passcode, targets, onLoadPreset }: PresetManagerProps) {
+export function PresetManager({ origin, passcode, cannonOrigin, targets, onLoadPreset }: PresetManagerProps) {
   const [presets, setPresets] = useLocalStorage<Preset[]>('osc-presets', []);
   const [isOpen, setIsOpen] = useState(false);
   const [newPresetName, setNewPresetName] = useState('');
@@ -24,6 +25,7 @@ export function PresetManager({ origin, passcode, targets, onLoadPreset }: Prese
       name: newPresetName.trim(),
       origin,
       passcode,
+      cannonOrigin,
       targets: targets.map(({ id, isExpanded, ...rest }) => rest),
       createdAt: Date.now(),
     };
@@ -34,7 +36,7 @@ export function PresetManager({ origin, passcode, targets, onLoadPreset }: Prese
   };
 
   const handleLoad = (preset: Preset) => {
-    onLoadPreset(preset.origin, preset.passcode ?? 940, preset.targets);
+    onLoadPreset(preset.origin, preset.passcode ?? 940, preset.cannonOrigin ?? 'osc-mk6', preset.targets);
     setIsOpen(false);
   };
 

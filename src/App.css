@@ -193,6 +193,10 @@
   overflow: hidden;
 }
 
+.app__input-group--cannon-origin {
+  min-width: 140px;
+}
+
 .app__origin-inputs {
   display: flex;
   gap: 0.75rem;
@@ -333,6 +337,12 @@
   margin-top: 1rem;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.app__origin-dropdowns {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
 }
 
 .app__nether-pos {

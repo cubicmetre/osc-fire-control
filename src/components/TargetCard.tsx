@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import type { Coordinates, TargetCell, CalculationResult, ValidationResult } from '../types';
+import type { Coordinates, TargetCell, CalculationResult, ValidationResult, CannonOriginVariant } from '../types';
 import { calculate } from '../utils/calculations';
 import { validateTarget, parseInteger } from '../utils/validation';
 import { LEDDisplay } from './LEDDisplay';
@@ -8,6 +8,7 @@ import './TargetCard.css';
 interface TargetCardProps {
   target: TargetCell;
   origin: Coordinates;
+  cannonOrigin: CannonOriginVariant;
   passcode: number;
   index: number;
   onUpdate: (id: string, updates: Partial<TargetCell>) => void;
@@ -21,6 +22,7 @@ interface TargetCardProps {
 export function TargetCard({
   target,
   origin,
+  cannonOrigin,
   passcode,
   index,
   onUpdate,
@@ -51,16 +53,16 @@ export function TargetCard({
   // Calculate results
   const result: CalculationResult | null = useMemo(() => {
     try {
-      return calculate(origin, target, passcode);
+      return calculate(origin, target, passcode, cannonOrigin);
     } catch {
       return null;
     }
-  }, [origin, target, passcode]);
+  }, [origin, target, passcode, cannonOrigin]);
 
   // Validate
   const validation: ValidationResult = useMemo(() => {
-    return validateTarget(origin, target, passcode);
-  }, [origin, target, passcode]);
+    return validateTarget(origin, target, passcode, cannonOrigin);
+  }, [origin, target, passcode, cannonOrigin]);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);

@@ -1,3 +1,5 @@
+export type CannonOriginVariant = 'osc-mk6' | 'osc-ms';
+
 export interface Coordinates {
   x: number;
   y: number;
@@ -73,6 +75,7 @@ export interface Preset {
   name: string;
   origin: Coordinates;
   passcode: number;
+  cannonOrigin?: CannonOriginVariant;
   targets: Omit<TargetCell, 'id' | 'isExpanded'>[];
   createdAt: number;
 }

@@ -1,4 +1,4 @@
-import type { Coordinates, CalculationResult, TargetCell } from '../types';
+import type { Coordinates, CalculationResult, TargetCell, CannonOriginVariant } from '../types';
 
 // Constants from Excel formulas
 const DV_PLUS_X = 8.755553287151535;
@@ -7,32 +7,42 @@ const DV_PLUS_Z = 8.755553287151535;
 const DV_MINUS_X = -8.664591055789826;
 const DV_MINUS_Z = -8.664591055789826;
 const DV_YX = -0.596968396919667;
+const DY_MS = 3.51;
 const DY_STAB = 106.92 + 44.4;
 const DY_NUKE = 140;
 const DX = 22.5000000095367;
 const DZ = 0.9999999904633 - 1;
+const DXZ_MS = 8.43750000953673;
+
 const slowdownXZ = 0.900000035762786;
 const slowdownY = 1.500000000000000;
 
 /**
  * Main calculation function
+ * @param cannonOrigin - When 'osc-ms', uses DXZ_MS for X/Z offset and subtracts DY_MS from DY
  */
 export function calculate(
   origin: Coordinates,
   target: TargetCell,
-  passcode: number
+  passcode: number,
+  cannonOrigin: CannonOriginVariant = 'osc-mk6'
 ): CalculationResult {
+  const useOscMs = cannonOrigin === 'osc-ms';
+
   // Step 1: Determine firing direction for X and Z
   const dvX = target.target.x > origin.x ? DV_PLUS_X : DV_MINUS_X;
   const dvZ = target.target.z > origin.z ? DV_PLUS_Z : DV_MINUS_Z;
 
-  // Step 2: Define DY from fire mode
-  const DY = target.fireMode === 'nuke' ? DY_NUKE : DY_STAB;
+  // Step 2: Define DY from fire mode; subtract DY_MS when OSC MS
+  const baseDY = target.fireMode === 'nuke' ? DY_NUKE : DY_STAB;
+  const DY = useOscMs ? baseDY - DY_MS : baseDY;
 
-  // Calculate the inital position of Payload
-  const iX = origin.x + DX + target.magazineSlot;
+  // Calculate the inital position of Payload (use DXZ_MS for both X and Z when OSC MS)
+  const dX = useOscMs ? DXZ_MS : DX;
+  const dZ = useOscMs ? DXZ_MS : DZ;
+  const iX = origin.x + dX + target.magazineSlot;
   const iY = origin.y + 2.1975;
-  const iZ = origin.z + DZ;
+  const iZ = origin.z + dZ;
 
   // Step 3: Calculate diffY, enforce >= 50
   let diffY = (DY + target.target.y) - iY;

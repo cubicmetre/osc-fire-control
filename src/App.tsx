@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { Coordinates, TargetCell } from './types';
+import type { Coordinates, TargetCell, CannonOriginVariant } from './types';
 import { VALID_PASSCODES } from './data/validPasscodes';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { TargetCard } from './components/TargetCard';
@@ -29,6 +29,7 @@ function createDefaultTarget(index: number): TargetCell {
 
 export default function App() {
   const [origin, setOrigin] = useLocalStorage<Coordinates>('osc-origin', { x: 0, y: 64, z: 0 });
+  const [cannonOrigin, setCannonOrigin] = useLocalStorage<CannonOriginVariant>('osc-cannon-origin', 'osc-mk6');
   const [passcode, setPasscode] = useLocalStorage<number>('osc-passcode', 940);
   const [showPanorama, setShowPanorama] = useLocalStorage<boolean>('osc-show-panorama', true);
   const [isTallLayout, setIsTallLayout] = useState(() => window.innerHeight > window.innerWidth);
@@ -159,9 +160,10 @@ export default function App() {
     });
   }, []);
 
-  const handleLoadPreset = (presetOrigin: Coordinates, presetPasscode: number, presetTargets: Omit<TargetCell, 'id' | 'isExpanded'>[]) => {
+  const handleLoadPreset = (presetOrigin: Coordinates, presetPasscode: number, presetCannonOrigin: CannonOriginVariant, presetTargets: Omit<TargetCell, 'id' | 'isExpanded'>[]) => {
     setOrigin(presetOrigin);
     setPasscode(presetPasscode);
+    setCannonOrigin(presetCannonOrigin);
     setTargets(presetTargets.map((t, i) => ({
       ...t,
       id: generateId(),
@@ -256,17 +258,31 @@ export default function App() {
                   </div>
                 </div>
                 <div className="app__origin-footer">
-                  <div className="app__input-group app__input-group--passcode">
-                    <label className="app__input-label">Passcode</label>
-                    <select
-                      className="app__passcode-select"
-                      value={passcode}
-                      onChange={(e) => setPasscode(parseInt(e.target.value))}
-                    >
-                      {VALID_PASSCODES.map((code) => (
-                        <option key={code} value={code}>{code}</option>
-                      ))}
-                    </select>
+                  <div className="app__origin-dropdowns">
+                    <div className="app__input-group app__input-group--passcode">
+                      <label className="app__input-label">Passcode</label>
+                      <select
+                        className="app__passcode-select"
+                        value={passcode}
+                        onChange={(e) => setPasscode(parseInt(e.target.value))}
+                      >
+                        {VALID_PASSCODES.map((code) => (
+                          <option key={code} value={code}>{code}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="app__input-group app__input-group--cannon-origin">
+                      <label className="app__input-label">Cannon</label>
+                      <select
+                        className="app__passcode-select"
+                        value={cannonOrigin}
+                        onChange={(e) => setCannonOrigin(e.target.value as CannonOriginVariant)}
+                        aria-label="Cannon origin variant"
+                      >
+                        <option value="osc-mk6">OSC Mk6</option>
+                        <option value="osc-ms">OSC MS</option>
+                      </select>
+                    </div>
                   </div>
                   <div className="app__nether-pos">
                     <span className="app__nether-label">Nether Pos</span>
@@ -284,6 +300,7 @@ export default function App() {
             <PresetManager
               origin={origin}
               passcode={passcode}
+              cannonOrigin={cannonOrigin}
               targets={targets}
               onLoadPreset={handleLoadPreset}
             />
@@ -307,6 +324,7 @@ export default function App() {
                   key={target.id}
                   target={target}
                   origin={origin}
+                  cannonOrigin={cannonOrigin}
                   passcode={passcode}
                   index={index}
                   onUpdate={handleUpdateTarget}
