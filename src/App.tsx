@@ -295,17 +295,6 @@ export default function App() {
             )}
           </section>
 
-          {/* Tools Section */}
-          <section className="app__section app__section--tools">
-            <PresetManager
-              origin={origin}
-              passcode={passcode}
-              cannonOrigin={cannonOrigin}
-              targets={targets}
-              onLoadPreset={handleLoadPreset}
-            />
-          </section>
-
           {/* Targets Section */}
           <section className="app__section app__section--targets">
             <div className="app__section-header">
@@ -313,6 +302,15 @@ export default function App() {
                 <span className="app__section-icon">🎯</span>
                 Targets
               </h2>
+              <div className="app__preset-wrapper">
+                <PresetManager
+                  origin={origin}
+                  passcode={passcode}
+                  cannonOrigin={cannonOrigin}
+                  targets={targets}
+                  onLoadPreset={handleLoadPreset}
+                />
+              </div>
               <button className="app__add-btn" onClick={handleAddTarget}>
                 + Add Target
               </button>

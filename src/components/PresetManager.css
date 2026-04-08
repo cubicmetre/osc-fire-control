@@ -1,31 +1,37 @@
 .preset-manager__toggle {
-  padding: 0.6rem 1rem;
-  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
-  border: 1px solid #1a4a80;
+  padding: 0.55rem 1rem;
+  background: #ffffff;
+  border: 1px solid #e8eaee;
   border-radius: 8px;
-  color: #a8c8ff;
-  font-family: 'Orbitron', monospace;
-  font-size: 0.75rem;
+  color: #5a6270;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .preset-manager__toggle:hover {
-  background: linear-gradient(135deg, #1a4a80 0%, #1e2a4e 100%);
+  background: #f8f9fb;
+  border-color: #d4d7dd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
 }
 
 .preset-manager {
-  background: linear-gradient(145deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
-  border: 1px solid #0f3460;
+  background: #ffffff;
+  border: 1px solid #e8eaee;
   border-radius: 12px;
   padding: 1.25rem;
-  box-shadow: 0 4px 20px rgba(15, 52, 96, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* Only apply backdrop-filter blur when video is visible */
 .app--with-video .preset-manager {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .preset-manager__header {
@@ -36,45 +42,56 @@
 }
 
 .preset-manager__title {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.9rem;
-  color: #60a5fa;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
+  color: #1c2028;
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
 }
 
 .preset-manager__close {
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: rgba(255, 255, 255, 0.05);
-  color: #60a5fa;
-  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #e8eaee;
+  background: #f4f5f7;
+  color: #5a6270;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .preset-manager__close:hover {
-  background: rgba(96, 165, 250, 0.2);
+  background: #e8eaee;
+  color: #1c2028;
 }
 
 .preset-manager__save-btn {
   width: 100%;
-  padding: 0.75rem;
-  background: rgba(96, 165, 250, 0.1);
-  border: 1px dashed rgba(96, 165, 250, 0.3);
+  padding: 0.65rem;
+  background: #f8f9fb;
+  border: 1px dashed #d4d7dd;
   border-radius: 8px;
-  color: #60a5fa;
-  font-family: 'Orbitron', monospace;
-  font-size: 0.75rem;
+  color: #5a6270;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.65rem;
   cursor: pointer;
   transition: all 0.15s ease;
   margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
 .preset-manager__save-btn:hover {
-  background: rgba(96, 165, 250, 0.15);
+  background: #f0f2f5;
   border-style: solid;
+  color: #1c2028;
 }
 
 .preset-manager__save-form {
@@ -85,69 +102,72 @@
 
 .preset-manager__save-form input {
   flex: 1;
-  padding: 0.6rem 0.75rem;
-  background: #1a1a2e;
-  border: 1px solid #3a3a5c;
-  border-radius: 6px;
-  color: #e2e8f0;
+  padding: 0.5rem 0.6rem;
+  background: #f8f9fb;
+  border: 1px solid #e8eaee;
+  border-radius: 8px;
+  color: #1c2028;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 .preset-manager__save-form input:focus {
   outline: none;
-  border-color: #60a5fa;
+  border-color: #c47a3a;
+  box-shadow: 0 0 0 2px rgba(196, 122, 58, 0.1);
 }
 
 .preset-manager__btn {
-  padding: 0.6rem 0.75rem;
-  background: #60a5fa;
+  padding: 0.5rem 0.7rem;
+  background: #c47a3a;
   border: none;
   border-radius: 6px;
-  color: #0f172a;
-  font-family: 'Orbitron', monospace;
-  font-size: 0.7rem;
-  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .preset-manager__btn:hover {
-  background: #3b82f6;
+  background: #a0622e;
 }
 
 .preset-manager__btn--secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
+  background: #f0f2f5;
+  color: #5a6270;
 }
 
 .preset-manager__btn--secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: #e8eaee;
 }
 
 .preset-manager__btn--load {
-  background: rgba(96, 165, 250, 0.15);
-  color: #60a5fa;
+  background: rgba(196, 122, 58, 0.08);
+  color: #c47a3a;
 }
 
 .preset-manager__btn--load:hover {
-  background: rgba(96, 165, 250, 0.25);
+  background: rgba(196, 122, 58, 0.15);
 }
 
 .preset-manager__btn--delete {
-  background: rgba(233, 69, 96, 0.1);
-  color: #e94560;
-  padding: 0.5rem 0.6rem;
+  background: rgba(220, 53, 69, 0.05);
+  color: #dc3545;
+  padding: 0.4rem 0.55rem;
 }
 
 .preset-manager__btn--delete:hover {
-  background: rgba(233, 69, 96, 0.2);
+  background: rgba(220, 53, 69, 0.1);
 }
 
 .preset-manager__list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
   max-height: 250px;
   overflow-y: auto;
 }
@@ -155,54 +175,50 @@
 .preset-manager__empty {
   text-align: center;
   padding: 2rem;
-  color: #64748b;
+  color: #9aa0ab;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .preset-manager__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.6rem 0.7rem;
+  background: #f8f9fb;
+  border: 1px solid #f0f2f5;
   border-radius: 8px;
   transition: all 0.15s ease;
 }
 
 .preset-manager__item:hover {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(96, 165, 250, 0.2);
+  background: #f0f2f5;
+  border-color: #e8eaee;
 }
 
 .preset-manager__item-info {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
   min-width: 0;
 }
 
 .preset-manager__item-name {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
-  color: #e2e8f0;
+  font-size: 0.8rem;
+  color: #1c2028;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .preset-manager__item-meta {
-  font-size: 0.65rem;
-  color: #64748b;
+  font-size: 0.6rem;
+  color: #9aa0ab;
 }
 
 .preset-manager__item-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.35rem;
   flex-shrink: 0;
 }
-
-
-
-

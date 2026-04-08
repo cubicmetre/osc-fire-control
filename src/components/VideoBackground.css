@@ -3,7 +3,7 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: #0a0a0f;
+  background: #f4f5f7;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,9 +42,9 @@
   background: radial-gradient(
     ellipse at center,
     transparent 20%,
-    rgba(10, 10, 15, 0.6) 50%,
-    rgba(10, 10, 15, 0.95) 80%,
-    #0a0a0f 100%
+    rgba(244, 245, 247, 0.5) 50%,
+    rgba(244, 245, 247, 0.9) 80%,
+    #f4f5f7 100%
   );
   pointer-events: none;
   transition: opacity 0.5s ease;

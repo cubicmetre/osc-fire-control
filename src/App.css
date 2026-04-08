@@ -1,22 +1,34 @@
 /* App Container */
 .app {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-secondary-translucent: rgba(18, 18, 26, 0.85);
-  --bg-tertiary: #1a1a2e;
-  --border-color: #2a2a4a;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --accent: #e94560;
-  --accent-glow: rgba(233, 69, 96, 0.3);
+  --bg-page: #f4f5f7;
+  --bg-card: #ffffff;
+  --bg-card-translucent: rgba(255, 255, 255, 0.88);
+  --bg-input: #f8f9fb;
+  --bg-input-focus: #ffffff;
+  --border-light: #e8eaee;
+  --border-mid: #d4d7dd;
+  --border-strong: #b8bcc4;
+  --copper: #c47a3a;
+  --copper-light: #d4944e;
+  --copper-dark: #a0622e;
+  --copper-glow: rgba(196, 122, 58, 0.12);
+  --danger: #dc3545;
+  --danger-light: rgba(220, 53, 69, 0.08);
+  --success: #2d8a4e;
+  --success-light: rgba(45, 138, 78, 0.08);
+  --text-primary: #1c2028;
+  --text-secondary: #5a6270;
+  --text-muted: #9aa0ab;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 
   position: relative;
   z-index: 1;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: transparent;
+  background: var(--bg-page);
   color: var(--text-primary);
 }
 
@@ -24,47 +36,53 @@
 .app__header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  padding: 1.5rem 2rem;
-  background: var(--bg-secondary-translucent);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 1rem 2rem;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-/* Only apply backdrop-filter blur when video is visible */
 .app__header--with-video {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  background: var(--bg-card-translucent);
 }
 
 .app__title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1.5rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--copper);
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 3px;
 }
 
 .app__title-icon {
-  font-size: 1.75rem;
-  animation: pulse-glow 2s ease-in-out infinite;
+  font-size: 1.3rem;
+  filter: none;
+  animation: none;
 }
 
+/* Panorama toggle button */
 .app__toggle-panorama-btn {
   display: flex;
   align-items: center;
   gap: 0;
   padding: 0;
-  background: rgba(233, 69, 96, 0.15);
-  border: 1px solid var(--accent);
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
   border-radius: 50%;
-  color: var(--accent);
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
   overflow: hidden;
   height: 2rem;
   width: 2rem;
@@ -73,8 +91,8 @@
 }
 
 .app__toggle-panorama-btn:hover {
-  background: rgba(233, 69, 96, 0.25);
-  box-shadow: 0 0 15px var(--accent-glow);
+  background: var(--border-light);
+  border-color: var(--border-mid);
 }
 
 .app__toggle-panorama-btn:active {
@@ -88,25 +106,24 @@
   width: 2rem;
   height: 2rem;
   min-width: 2rem;
-  font-size: 1rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
 }
 
 .app__toggle-panorama-text {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
-  color: var(--accent);
+  color: var(--text-secondary);
   opacity: 0;
   max-width: 0;
   padding-right: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
 }
 
-/* Expanded state on hover */
 .app__toggle-panorama-btn--expanded {
   border-radius: 1rem;
   width: auto;
@@ -118,26 +135,16 @@
   padding-right: 0.75rem;
 }
 
-@keyframes pulse-glow {
-  0%, 100% { 
-    filter: drop-shadow(0 0 5px var(--accent-glow));
-  }
-  50% { 
-    filter: drop-shadow(0 0 15px var(--accent-glow));
-  }
-}
-
-/* Main Content */
+/* Main Content — single column centered */
 .app__main {
   flex: 1;
-  padding: 2rem;
+  padding: 1.75rem 2rem;
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  gap: 1rem;
 }
 
 .app__main--hidden {
@@ -148,28 +155,28 @@
 
 /* Sections */
 .app__section {
-  background: var(--bg-secondary-translucent);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
 }
 
-/* Only apply backdrop-filter blur when video is visible */
 .app--with-video .app__section {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  background: var(--bg-card-translucent);
 }
 
 .app__section-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
 
 .app__section-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 1rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
@@ -178,19 +185,49 @@
   gap: 0.5rem;
   text-transform: uppercase;
   letter-spacing: 2px;
+  margin-right: auto;
 }
 
 .app__section-icon {
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
-/* Origin Section */
+/* Origin Section — copper accent */
 .app__section--origin {
-  border-color: var(--accent);
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.1),
-    0 0 30px var(--accent-glow);
-  overflow: hidden;
+  border-color: var(--copper);
+  border-width: 1px;
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--copper-glow);
+  overflow: visible;
+  position: relative;
+}
+
+/* Copper corner accents */
+.app__section--origin::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--copper);
+  border-left: 2px solid var(--copper);
+  border-radius: 1px 0 0 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.app__section--origin::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid var(--copper);
+  border-right: 2px solid var(--copper);
+  border-radius: 0 0 1px 0;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .app__input-group--cannon-origin {
@@ -199,7 +236,7 @@
 
 .app__origin-inputs {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin-top: 1rem;
 }
 
@@ -207,38 +244,39 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
   min-width: 0;
 }
 
 .app__coord-input label {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.7rem;
-  color: var(--accent);
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
+  color: var(--copper);
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .app__coord-input input {
   width: 100%;
-  padding: 0.6rem 0.5rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  padding: 0.55rem 0.5rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   color: var(--text-primary);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   text-align: center;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-sizing: border-box;
 }
 
 .app__coord-input input:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-glow);
+  border-color: var(--copper);
+  background: var(--bg-input-focus);
+  box-shadow: 0 0 0 3px var(--copper-glow);
 }
 
 .app__origin-header {
@@ -254,7 +292,7 @@
 }
 
 .app__origin-header:hover {
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 .app__section--collapsed .app__origin-header {
@@ -262,10 +300,10 @@
 }
 
 .app__collapse-icon {
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   color: var(--text-muted);
   margin-left: 0.5rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease;
   transform: rotate(-90deg);
 }
 
@@ -275,16 +313,16 @@
 
 .app__origin-summary {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  padding: 0.25rem 0.75rem;
-  background: var(--bg-tertiary);
+  font-size: 0.8rem;
+  color: var(--copper);
+  padding: 0.2rem 0.65rem;
+  background: var(--copper-glow);
   border-radius: 6px;
 }
 
 .app__origin-hint {
   margin: 0;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--text-muted);
   font-style: italic;
 }
@@ -292,41 +330,42 @@
 .app__input-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .app__input-group--passcode {
-  min-width: 120px;
+  min-width: 110px;
 }
 
 .app__input-label {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.65rem;
-  color: var(--accent);
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.55rem;
+  color: var(--copper);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
+  letter-spacing: 2px;
+  font-weight: 700;
 }
 
 .app__passcode-select {
-  padding: 0.5rem 0.6rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  padding: 0.45rem 0.5rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
   color: var(--text-primary);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.2s ease;
 }
 
 .app__passcode-select:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--copper);
+  box-shadow: 0 0 0 3px var(--copper-glow);
 }
 
 .app__passcode-select option {
-  background: var(--bg-secondary);
+  background: #fff;
   color: var(--text-primary);
 }
 
@@ -336,72 +375,74 @@
   align-items: flex-end;
   margin-top: 1rem;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .app__origin-dropdowns {
   display: flex;
   align-items: flex-end;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
 .app__nether-pos {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 0.75rem;
-  background: rgba(139, 0, 0, 0.15);
-  border: 1px solid rgba(139, 0, 0, 0.3);
+  padding: 0.3rem 0.6rem;
+  background: rgba(220, 53, 69, 0.05);
+  border: 1px solid rgba(220, 53, 69, 0.12);
   border-radius: 6px;
 }
 
 .app__nether-label {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.6rem;
-  color: #ff6b6b;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.5rem;
+  color: var(--danger);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  font-weight: 700;
 }
 
 .app__nether-coords {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: #ffaaaa;
+  font-size: 0.75rem;
+  color: #c0392b;
 }
 
-/* Tools Section - no background or blur, just contains the preset button/panel */
-.app__section--tools {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  backdrop-filter: none;
+/* Preset wrapper — positions the expanded panel as a dropdown */
+.app__preset-wrapper {
+  position: relative;
 }
 
-/* Override the video blur rule for tools section */
-.app--with-video .app__section--tools {
-  backdrop-filter: none;
+.app__preset-wrapper .preset-manager {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 50;
+  min-width: 340px;
+  margin-top: 0.5rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
-/* Targets Section */
 .app__add-btn {
-  padding: 0.6rem 1.25rem;
-  background: linear-gradient(135deg, var(--accent) 0%, #c73e54 100%);
+  padding: 0.5rem 1.1rem;
+  background: var(--copper);
   border: none;
   border-radius: 8px;
-  color: white;
-  font-family: 'Orbitron', monospace;
-  font-size: 0.75rem;
-  font-weight: 600;
+  color: #ffffff;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .app__add-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px var(--accent-glow);
+  background: var(--copper-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .app__add-btn:active {
@@ -411,22 +452,21 @@
 .app__targets-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1rem;
 }
 
 /* Footer */
 .app__footer {
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 2rem;
   text-align: center;
-  background: var(--bg-secondary-translucent);
-  border-top: 1px solid var(--border-color);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  border-top: 1px solid var(--border-light);
+  background: #ffffff;
 }
 
-/* Only apply backdrop-filter blur when video is visible */
 .app--with-video .app__footer {
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(16px);
+  background: var(--bg-card-translucent);
 }
 
 .app__footer--hidden {
@@ -437,28 +477,28 @@
 
 .app__footer p {
   margin: 0;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.75rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
   color: var(--text-muted);
-  letter-spacing: 1px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 /* Responsive */
 @media (max-width: 640px) {
-  .app__header {
+  .app__main {
     padding: 1rem;
+  }
+
+  .app__header {
+    padding: 0.85rem 1rem;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   .app__title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 2px;
-  }
-
-
-  .app__main {
-    padding: 1rem;
   }
 
   .app__origin-inputs {
@@ -466,17 +506,16 @@
   }
 
   .app__section-header {
-    flex-direction: column;
-    gap: 1rem;
-    align-items: stretch;
+    flex-wrap: wrap;
   }
 
   .app__add-btn {
     width: 100%;
   }
 
-  .app__tools {
-    flex-direction: column;
+  .app__preset-wrapper .preset-manager {
+    min-width: 280px;
+    right: auto;
+    left: 0;
   }
 }
-

@@ -1,18 +1,19 @@
+/* LED panel stays dark — it's hardware embedded in the UI */
 .led-display {
-  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
-  border: 2px solid #0f3460;
-  border-radius: 12px;
+  background: linear-gradient(160deg, #1a1e28 0%, #22262f 100%);
+  border: 1px solid #2a2e38;
+  border-radius: 10px;
   padding: 1rem;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .led-display--invalid {
-  border-color: #e94560;
-  box-shadow: 
-    0 4px 20px rgba(233, 69, 96, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-color: rgba(220, 53, 69, 0.4);
+  box-shadow:
+    0 4px 16px rgba(220, 53, 69, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .led-display__header {
@@ -23,24 +24,28 @@
 }
 
 .led-display__title {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.75rem;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.65rem;
   font-weight: 600;
-  color: #e94560;
+  color: #c47a3a;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .led-display__warning {
-  font-size: 0.65rem;
-  color: #ffc107;
+  font-size: 0.6rem;
+  color: #ffa502;
   animation: pulse 1.5s ease-in-out infinite;
+  letter-spacing: 1px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  50% { opacity: 0.35; }
 }
 
 .led-display__grid-wrapper {
@@ -50,9 +55,8 @@
   position: relative;
 }
 
-/* Color variables for easy reference */
+/* Grid frame with color-coded borders */
 .led-display__frame {
-  /* Column colors */
   --color-blue-dark: #0070C0;
   --color-blue-light: #00B0F0;
   --color-green: #92D050;
@@ -60,36 +64,33 @@
   --color-orange: #ED7D31;
   --color-red: #C00000;
   --color-brown: #996633;
-  
-  /* Row colors - dark to light gradient */
+
   --color-row-1: #0D0D0D;
   --color-row-2: #262626;
   --color-row-3: #404040;
   --color-row-4: #595959;
   --color-row-5: #808080;
-  
-  /* Grid sizing */
-  --led-size: 24px;
+
+  --led-size: 30px;
   --border-size: 10px;
-  
+  --bulb-gap: 2px;
+
   display: grid;
-  /* 15 columns: border + 13 LEDs + border */
   grid-template-columns: var(--border-size) repeat(13, var(--led-size)) var(--border-size);
-  /* 7 rows: border + 5 LED rows + border */
   grid-template-rows: var(--border-size) repeat(5, var(--led-size)) var(--border-size);
   gap: 0;
-  background: #1a1a2e;
-  border-radius: 4px;
+  background: #080d18;
+  border-radius: 2px;
   overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
-/* Border cells for columns (top/bottom) and rows (left/right) */
+/* Border cells */
 .led-display__border-cell {
   width: 100%;
   height: 100%;
 }
 
-/* Column colors */
 .led-display__border-cell--blue-dark { background: var(--color-blue-dark); }
 .led-display__border-cell--blue-light { background: var(--color-blue-light); }
 .led-display__border-cell--green { background: var(--color-green); }
@@ -98,89 +99,118 @@
 .led-display__border-cell--red { background: var(--color-red); }
 .led-display__border-cell--brown { background: var(--color-brown); }
 
-/* Row colors */
 .led-display__border-cell--row-1 { background: var(--color-row-1); }
 .led-display__border-cell--row-2 { background: var(--color-row-2); }
 .led-display__border-cell--row-3 { background: var(--color-row-3); }
 .led-display__border-cell--row-4 { background: var(--color-row-4); }
 .led-display__border-cell--row-5 { background: var(--color-row-5); }
 
-/* LED cells - centered within grid cell */
+/* ========== COPPER BULB LED CELLS ========== */
 .led-display__led {
   width: var(--led-size);
   height: var(--led-size);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1a1a2e;
+  background: #080d18;
+  padding: var(--bulb-gap);
 }
 
-/* The actual LED circle */
+/* Outer shell — the copper block frame */
 .led-display__led-outer {
-  width: calc(var(--led-size) - 4px);
-  height: calc(var(--led-size) - 4px);
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
+  position: relative;
 }
 
-/* Off state - dark circle with glassy appearance */
+/* ---- OFF STATE — dark oxidized copper bulb ---- */
 .led-display__led--off .led-display__led-outer {
-  background: 
-    radial-gradient(ellipse 50% 30% at 50% 25%, rgba(255, 255, 255, 0.15) 0%, transparent 100%),
-    radial-gradient(circle at 30% 30%, #2a2a3e 0%, #1a1a2e 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.5),
-    inset 0 -1px 2px rgba(255, 255, 255, 0.05),
+  background: linear-gradient(
+    145deg,
+    #5a4332 0%,
+    #4a3628 15%,
+    #3d2c20 50%,
+    #33241a 85%,
+    #2a1d14 100%
+  );
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.08),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Inner face — the dark recessed bulb center */
+.led-display__led--off .led-display__led-inner {
+  width: 62%;
+  height: 62%;
+  border-radius: 2px;
+  background: linear-gradient(
+    145deg,
+    #1c1410 0%,
+    #241a12 40%,
+    #1a120c 100%
+  );
+  box-shadow:
+    inset 1px 1px 3px rgba(0, 0, 0, 0.6),
+    inset -1px -1px 1px rgba(90, 67, 50, 0.15);
+}
+
+/* ---- ON STATE — lit copper bulb with warm amber glow ---- */
+.led-display__led--on .led-display__led-outer {
+  background: linear-gradient(
+    145deg,
+    #c48a5a 0%,
+    #a87040 15%,
+    #8b5e34 40%,
+    #7a5230 60%,
+    #6b4828 85%,
+    #5a3c20 100%
+  );
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 220, 160, 0.25),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.3),
+    0 0 6px rgba(255, 170, 60, 0.3),
     0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.led-display__led--off .led-display__led-inner {
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
-  background: 
-    radial-gradient(ellipse 60% 40% at 45% 35%, rgba(255, 255, 255, 0.1) 0%, transparent 60%),
-    radial-gradient(circle at 40% 40%, #3a3a4e 0%, #252535 100%);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-/* On state - glowing green circle with glassy shine (no outer glow - handled by glow layer) */
-.led-display__led--on .led-display__led-outer {
-  background: 
-    radial-gradient(ellipse 50% 30% at 50% 25%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
-    radial-gradient(circle at 30% 30%, #1a4a1a 0%, #0a2a0a 100%);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 -1px 2px rgba(0, 255, 100, 0.2);
-}
-
+/* Inner face — the glowing amber light */
 .led-display__led--on .led-display__led-inner {
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
+  width: 62%;
+  height: 62%;
+  border-radius: 2px;
   position: relative;
-  background: radial-gradient(circle at 50% 50%, #00ff88 0%, #00dd66 40%, #00aa44 100%);
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  background:
+    radial-gradient(circle at 40% 38%, rgba(255, 255, 220, 0.9) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, #ffcc44 0%, #ff9922 50%, #dd7711 100%);
+  box-shadow:
+    0 0 4px rgba(255, 170, 60, 0.6),
+    0 0 10px rgba(255, 136, 0, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Glassy highlight on inner LED */
+/* Specular highlight on lit bulb — top-left glint */
 .led-display__led--on .led-display__led-inner::before {
   content: '';
   position: absolute;
-  top: 10%;
-  left: 20%;
-  width: 50%;
-  height: 35%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 40%, transparent 70%);
+  top: 8%;
+  left: 12%;
+  width: 40%;
+  height: 30%;
+  border-radius: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%
+  );
 }
 
-/* ========== GLOW OVERLAY LAYER ========== */
-/* This layer renders on top of the grid with blur filter for unified additive glow */
-
+/* ========== GLOW OVERLAY LAYER — warm amber ========== */
 .led-display__glow-layer {
   position: absolute;
   top: 0;
@@ -192,12 +222,11 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  /* Offset to align with LED grid (account for border) */
   padding-top: calc(var(--border-size, 10px));
   padding-bottom: calc(var(--border-size, 10px));
   padding-left: calc(var(--border-size, 10px));
   padding-right: calc(var(--border-size, 10px));
-  filter: blur(6px);
+  filter: blur(5px);
   mix-blend-mode: screen;
 }
 
@@ -206,8 +235,8 @@
 }
 
 .led-display__glow-cell {
-  width: var(--led-size, 24px);
-  height: var(--led-size, 24px);
+  width: var(--led-size, 30px);
+  height: var(--led-size, 30px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,28 +244,35 @@
 
 .led-display__glow-cell--on::before {
   content: '';
-  width: 60%;
-  height: 60%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 255, 100, 0.8) 0%, rgba(0, 255, 100, 0.4) 50%, transparent 100%);
-  animation: glow-pulse 2s ease-in-out infinite;
+  width: 55%;
+  height: 55%;
+  border-radius: 2px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 187, 68, 0.9) 0%,
+    rgba(255, 153, 34, 0.5) 45%,
+    rgba(255, 119, 0, 0.15) 75%,
+    transparent 100%
+  );
+  animation: copper-glow 2.5s ease-in-out infinite;
 }
 
-@keyframes glow-pulse {
-  0%, 100% { 
+@keyframes copper-glow {
+  0%, 100% {
     opacity: 0.7;
     transform: scale(1);
   }
-  50% { 
+  50% {
     opacity: 1;
     transform: scale(1.1);
   }
 }
 
+/* Summary bar */
 .led-display__summary {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
@@ -250,22 +286,23 @@
   padding: 0.25rem 0;
   background: none;
   border: none;
-  color: #94a3b8;
-  font-family: 'Orbitron', monospace;
-  font-size: 0.7rem;
+  color: #6b7d93;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   cursor: pointer;
   transition: color 0.15s ease;
+  font-weight: 600;
 }
 
 .led-display__stats-toggle:hover {
-  color: #e2e8f0;
+  color: #c8d6e5;
 }
 
 .led-display__stats-toggle-icon {
-  color: #e94560;
-  font-size: 0.65rem;
+  color: #c47a3a;
+  font-size: 0.5rem;
 }
 
 .led-display__summary-item {
@@ -275,26 +312,27 @@
 }
 
 .led-display__summary-label {
-  font-family: 'Orbitron', monospace;
-  font-size: 0.7rem;
-  color: #64748b;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.6rem;
+  color: #3d4f63;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .led-display__summary-value {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.8rem;
-  color: #e2e8f0;
+  font-size: 0.75rem;
+  color: #c8d6e5;
 }
 
 .led-display__summary-value--time {
-  color: #00ff88;
+  color: #d4944e;
 }
 
 /* Responsive */
 @media (max-width: 480px) {
   .led-display__frame {
-    --led-size: 18px;
+    --led-size: 22px;
     --border-size: 8px;
   }
 }
