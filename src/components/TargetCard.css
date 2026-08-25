@@ -295,6 +295,25 @@
   color: #e2e8f0;
 }
 
+.target-card__input-group--disabled,
+.target-card__coord-input--disabled {
+  opacity: 0.45;
+  filter: saturate(0.35);
+}
+
+.target-card__input-group--disabled input,
+.target-card__input-group--disabled select,
+.target-card__coord-input--disabled input {
+  cursor: not-allowed;
+}
+
+.target-card__input-group input:disabled,
+.target-card__input-group select:disabled,
+.target-card__coord-input input:disabled {
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
 /* Target stats panel (shown when "Show target stats" is toggled in Binary Output summary bar) */
 .target-card__stats-panel {
   margin-top: 0.75rem;

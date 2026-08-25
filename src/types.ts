@@ -1,4 +1,19 @@
-export type CannonOriginVariant = 'osc-mk6' | 'osc-ms';
+export type CannonOriginVariant = 'osc-mk6' | 'osc-ms' | 'osc-sfc';
+
+/** Payload sizes available for OSC SFC (used for time estimates; not encoded in binary). */
+export const SFC_PAYLOAD_SIZES = [16, 64, 256, 1024] as const;
+export type SfcPayloadSize = (typeof SFC_PAYLOAD_SIZES)[number];
+
+export interface SfcTerminal {
+  /** Signed rounded orange channel: round(100/1233 * (dx + dz)) */
+  orange: number;
+  /** Signed rounded blue channel: round(100/1233 * (dx - dz)) */
+  blue: number;
+  /** 15 magnitude bits, MSB left */
+  orangeBits: number[];
+  /** 15 magnitude bits, MSB left */
+  blueBits: number[];
+}
 
 export interface Coordinates {
   x: number;
@@ -49,6 +64,8 @@ export interface CalculationResult {
     z: number;
   };
   binaryGrid: number[][];
+  /** Present when cannon is OSC SFC; drives the two-row orange/blue terminal */
+  sfcTerminal?: SfcTerminal;
   /** Final position of payload on target */
   exactPos: Coordinates;
   /** Initial position of payload at launch */

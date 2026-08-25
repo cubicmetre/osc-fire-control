@@ -210,7 +210,7 @@ export default function App() {
                   {origin.x}, {origin.y}, {origin.z}
                 </span>
               )}
-              {isOriginExpanded && (
+              {isOriginExpanded && cannonOrigin !== 'osc-sfc' && (
                 <p className="app__origin-hint">Coordinates must be divisible by 16</p>
               )}
             </div>
@@ -259,11 +259,12 @@ export default function App() {
                 </div>
                 <div className="app__origin-footer">
                   <div className="app__origin-dropdowns">
-                    <div className="app__input-group app__input-group--passcode">
+                    <div className={`app__input-group app__input-group--passcode ${cannonOrigin === 'osc-sfc' ? 'app__input-group--disabled' : ''}`}>
                       <label className="app__input-label">Passcode</label>
                       <select
                         className="app__passcode-select"
                         value={passcode}
+                        disabled={cannonOrigin === 'osc-sfc'}
                         onChange={(e) => setPasscode(parseInt(e.target.value))}
                       >
                         {VALID_PASSCODES.map((code) => (
@@ -281,6 +282,7 @@ export default function App() {
                       >
                         <option value="osc-mk6">OSC Mk6</option>
                         <option value="osc-ms">OSC MS</option>
+                        <option value="osc-sfc">OSC SFC</option>
                       </select>
                     </div>
                   </div>

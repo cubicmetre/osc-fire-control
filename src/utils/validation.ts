@@ -1,13 +1,8 @@
 import type { Coordinates, TargetCell, ValidationResult, CannonOriginVariant } from '../types';
+import { SFC_PAYLOAD_SIZES } from '../types';
 import { isValidPasscode } from '../data/validPasscodes';
-import { calculate } from './calculations';
+import { calculate, SFC_MAX_MAGNITUDE } from './calculations';
 
-/**
- * Parse an integer from a string input, handling negative numbers properly.
- * Returns defaultValue for empty strings or invalid inputs.
- * Note: When typing "-", this will return defaultValue, which may clear the input.
- * This is expected behavior for controlled number inputs.
- */
 /**
  * Parse an integer from a string input, handling negative numbers properly.
  * Returns defaultValue for empty strings or invalid inputs.
@@ -48,20 +43,26 @@ export function validateTarget(
   cannonOrigin: CannonOriginVariant = 'osc-mk6'
 ): ValidationResult {
   const errors: string[] = [];
+  const isSfc = cannonOrigin === 'osc-sfc';
 
-  // Check origin alignment to 16
-  if (origin.x % 16 !== 0) {
-    errors.push(`Origin X (${origin.x}) must be divisible by 16`);
-  }
-  if (origin.y % 16 !== 0) {
-    errors.push(`Origin Y (${origin.y}) must be divisible by 16`);
-  }
-  if (origin.z % 16 !== 0) {
-    errors.push(`Origin Z (${origin.z}) must be divisible by 16`);
+  // Origin ÷16 alignment applies to OSC Mk6 / MS only (not SFC)
+  if (!isSfc) {
+    if (origin.x % 16 !== 0) {
+      errors.push(`Origin X (${origin.x}) must be divisible by 16`);
+    }
+    if (origin.y % 16 !== 0) {
+      errors.push(`Origin Y (${origin.y}) must be divisible by 16`);
+    }
+    if (origin.z % 16 !== 0) {
+      errors.push(`Origin Z (${origin.z}) must be divisible by 16`);
+    }
   }
 
-  // Fire mode-specific validation
-  if (target.fireMode === 'nuke') {
+  if (isSfc) {
+    if (!(SFC_PAYLOAD_SIZES as readonly number[]).includes(target.nukeSize)) {
+      errors.push(`Payload Size (${target.nukeSize}) must be one of ${SFC_PAYLOAD_SIZES.join(', ')}`);
+    }
+  } else if (target.fireMode === 'nuke') {
     if (target.nukeSize < 1) {
       errors.push(`Nuke Size (${target.nukeSize}) must be at least 1`);
     }
@@ -86,33 +87,42 @@ export function validateTarget(
     errors.push(`Distance (${distance.toFixed(1)}) must be at least 64 blocks`);
   }
 
-  // Check passcode validity
-  if (!isValidPasscode(passcode)) {
+  // Passcode only applies to OSC Mk6 / MS binary encoding
+  if (!isSfc && !isValidPasscode(passcode)) {
     errors.push(`Passcode (${passcode}) is not in the valid passcode list`);
   }
 
   // Use the same calculations as the main calculate function
   const result = calculate(origin, target, passcode, cannonOrigin);
 
-  // Check count overflows using calculated values
-  if (Math.abs(result.count.x) >= 32767.999) {
-    errors.push(`X distance is too large (count overflow)`);
-  }
-  if (Math.abs(result.count.z) >= 32767.999) {
-    errors.push(`Z distance is too large (count overflow)`);
-  }
-  if (Math.abs(result.count.y) >= 31.999) {
-    errors.push(`Y distance is too large (count overflow)`);
-  }
+  if (isSfc && result.sfcTerminal) {
+    if (Math.abs(result.sfcTerminal.orange) > SFC_MAX_MAGNITUDE) {
+      errors.push(`Orange channel (${result.sfcTerminal.orange}) exceeds 15-bit range`);
+    }
+    if (Math.abs(result.sfcTerminal.blue) > SFC_MAX_MAGNITUDE) {
+      errors.push(`Blue channel (${result.sfcTerminal.blue}) exceeds 15-bit range`);
+    }
+  } else {
+    // Check count overflows using calculated values
+    if (Math.abs(result.count.x) >= 32767.999) {
+      errors.push(`X distance is too large (count overflow)`);
+    }
+    if (Math.abs(result.count.z) >= 32767.999) {
+      errors.push(`Z distance is too large (count overflow)`);
+    }
+    if (Math.abs(result.count.y) >= 31.999) {
+      errors.push(`Y distance is too large (count overflow)`);
+    }
 
-  // Check if both X and Z counts are too small
-  if (Math.abs(result.count.x) < 1 && Math.abs(result.count.z) < 1) {
-    errors.push(`Target is too close (both X and Z counts < 1)`);
-  }
+    // Check if both X and Z counts are too small
+    if (Math.abs(result.count.x) < 1 && Math.abs(result.count.z) < 1) {
+      errors.push(`Target is too close (both X and Z counts < 1)`);
+    }
 
-  // Check diffY >= 50 (already enforced in calculate, but warn if it was clamped)
-  if (result.diff.y < 50) {
-    errors.push(`Y difference is less than minimum (50)`);
+    // Check diffY >= 50 (already enforced in calculate, but warn if it was clamped)
+    if (result.diff.y < 50) {
+      errors.push(`Y difference is less than minimum (50)`);
+    }
   }
 
   return {
@@ -127,4 +137,3 @@ export function validateTarget(
 export function isValidTarget(origin: Coordinates, target: TargetCell, passcode: number): boolean {
   return validateTarget(origin, target, passcode).isValid;
 }
-

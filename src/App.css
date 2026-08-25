@@ -330,6 +330,15 @@
   color: var(--text-primary);
 }
 
+.app__input-group--disabled {
+  opacity: 0.45;
+  filter: saturate(0.35);
+}
+
+.app__input-group--disabled .app__passcode-select {
+  cursor: not-allowed;
+}
+
 .app__origin-footer {
   display: flex;
   justify-content: space-between;

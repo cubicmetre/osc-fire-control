@@ -1,4 +1,4 @@
-import type { Coordinates, CalculationResult, TargetCell, CannonOriginVariant } from '../types';
+import type { Coordinates, CalculationResult, TargetCell, CannonOriginVariant, SfcTerminal } from '../types';
 
 // Constants from Excel formulas
 const DV_PLUS_X = 8.755553287151535;
@@ -17,9 +17,126 @@ const DXZ_MS = 8.43750000953673;
 const slowdownXZ = 0.900000035762786;
 const slowdownY = 1.500000000000000;
 
+/** Scale factor for OSC SFC orange/blue channels */
+export const SFC_SCALE = 100 / 1233;
+/** Max magnitude that fits in 15 bits */
+export const SFC_MAX_MAGNITUDE = 32767;
+
+/** Accel Start (payload building) ticks by payload size */
+const SFC_PAYLOAD_BUILD_TICKS: Record<number, number> = {
+  16: 667,
+  64: 1074,
+  256: 3026,
+  1024: 10770,
+};
+/** Fixed ticks from Accel Stop → Cannon Fire */
+const SFC_POST_ACCEL_TICKS = 74;
+
+const EMPTY_BINARY_GRID: number[][] = Array(5)
+  .fill(null)
+  .map(() => Array(13).fill(0));
+
+/**
+ * Convert magnitude to 15 bits, MSB left (bit 14 … bit 0).
+ */
+export function to15BitsMsbLeft(value: number): number[] {
+  const mag = Math.min(Math.abs(Math.trunc(value)), SFC_MAX_MAGNITUDE);
+  const bits: number[] = [];
+  for (let i = 14; i >= 0; i--) {
+    bits.push((mag >> i) & 1);
+  }
+  return bits;
+}
+
+/**
+ * SFC time breakdown from measured stages:
+ * Accel Start (payload build, hardcoded) → Accel Stop (+max|orange|,|blue|) → Cannon Fire (+74).
+ */
+function calculateSfcTimeBreakdown(
+  payloadSize: number,
+  orange: number,
+  blue: number
+): { total: string; payloadBuilding: string; acceleration: string } {
+  const payloadTicks = SFC_PAYLOAD_BUILD_TICKS[payloadSize] ?? SFC_PAYLOAD_BUILD_TICKS[16];
+  const accelerationTicks = Math.max(Math.abs(orange), Math.abs(blue));
+  const totalTicks = payloadTicks + accelerationTicks + SFC_POST_ACCEL_TICKS;
+
+  return {
+    total: formatTimeSeconds(Math.ceil(totalTicks / 20)),
+    payloadBuilding: formatTimeSeconds(Math.ceil(payloadTicks / 20)),
+    acceleration: formatTimeSeconds(Math.ceil(accelerationTicks / 20)),
+  };
+}
+
+/**
+ * Recover dx/dz from rounded orange/blue (inverse of scale*(dx±dz)).
+ * orange ≈ scale*(dx+dz), blue ≈ scale*(dx-dz) ⇒ dx = (o+b)/(2*scale), dz = (o-b)/(2*scale)
+ */
+function sfcInverseDelta(orange: number, blue: number): { dx: number; dz: number } {
+  const inv = 1233 / 100;
+  return {
+    dx: ((orange + blue) * inv) / 2,
+    dz: ((orange - blue) * inv) / 2,
+  };
+}
+
+/**
+ * OSC SFC: orange/blue from relative X/Z only.
+ */
+function calculateSfc(
+  origin: Coordinates,
+  target: TargetCell
+): CalculationResult {
+  const dx = target.target.x - origin.x;
+  const dz = target.target.z - origin.z;
+  const orange = Math.round(SFC_SCALE * (dx + dz));
+  const blue = Math.round(SFC_SCALE * (dx - dz));
+
+  const sfcTerminal: SfcTerminal = {
+    orange,
+    blue,
+    orangeBits: to15BitsMsbLeft(orange),
+    blueBits: to15BitsMsbLeft(blue),
+  };
+
+  const timeBreakdown = calculateSfcTimeBreakdown(target.nukeSize, orange, blue);
+
+  const initialPosition = {
+    x: origin.x,
+    y: origin.y + 20.5,
+    z: origin.z,
+  };
+  const recovered = sfcInverseDelta(orange, blue);
+  const exactPos = {
+    x: origin.x + recovered.dx,
+    y: origin.y + 20.5,
+    z: origin.z + recovered.dz,
+  };
+
+  const zero = { x: 0, y: 0, z: 0 };
+
+  return {
+    diff: { x: dx, y: target.target.y - origin.y, z: dz },
+    dvPlus: zero,
+    dvMinus: zero,
+    count: { x: orange, y: 0, z: blue },
+    coarse: zero,
+    fine: zero,
+    binaryGrid: EMPTY_BINARY_GRID,
+    sfcTerminal,
+    exactPos,
+    initialPosition,
+    exactMotion: { x: recovered.dx, y: 0, z: recovered.dz },
+    netherPos: overworldToNether(origin),
+    timeEstimate: timeBreakdown.total,
+    timeBreakdown,
+  };
+}
+
 /**
  * Main calculation function
- * @param cannonOrigin - When 'osc-ms', uses DXZ_MS for X/Z offset and subtracts DY_MS from DY
+ * @param cannonOrigin - When 'osc-ms', uses DXZ_MS for X/Z offset and subtracts DY_MS from DY.
+ *   When 'osc-sfc', uses relative X/Z orange/blue binary terminal.
  */
 export function calculate(
   origin: Coordinates,
@@ -27,6 +144,10 @@ export function calculate(
   passcode: number,
   cannonOrigin: CannonOriginVariant = 'osc-mk6'
 ): CalculationResult {
+  if (cannonOrigin === 'osc-sfc') {
+    return calculateSfc(origin, target);
+  }
+
   const useOscMs = cannonOrigin === 'osc-ms';
 
   // Step 1: Determine firing direction for X and Z
